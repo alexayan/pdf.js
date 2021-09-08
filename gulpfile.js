@@ -1001,7 +1001,7 @@ function buildMinified(defines, dir) {
     createCMapBundle().pipe(gulp.dest(dir + "web/cmaps")),
     createStandardFontBundle().pipe(gulp.dest(dir + "web/standard_fonts")),
 
-    preprocessHTML("web/viewer.html", defines).pipe(gulp.dest(dir + "web")),
+    preprocessHTML("web/viewer.html", defines).pipe(replace('__BUILD_VERSION__', `${BUILD_VERSION}`)).pipe(gulp.dest(dir + "web")),
     preprocessCSS("web/viewer.css", "minified", defines, true)
       .pipe(postcss([calc(), autoprefixer(AUTOPREFIXER_CONFIG)]))
       .pipe(gulp.dest(dir + "web")),
@@ -1236,7 +1236,7 @@ gulp.task(
           gulp.dest(MOZCENTRAL_CONTENT_DIR + "web/standard_fonts")
         ),
 
-        preprocessHTML("web/viewer.html", defines).pipe(
+        preprocessHTML("web/viewer.html", defines).pipe(replace('__BUILD_VERSION__', `${BUILD_VERSION}`)).pipe(
           gulp.dest(MOZCENTRAL_CONTENT_DIR + "web")
         ),
         preprocessCSS("web/viewer.css", "mozcentral", defines, true)
@@ -1328,7 +1328,7 @@ gulp.task(
           gulp.dest(CHROME_BUILD_CONTENT_DIR + "web/standard_fonts")
         ),
 
-        preprocessHTML("web/viewer.html", defines).pipe(
+        preprocessHTML("web/viewer.html", defines).pipe(replace('__BUILD_VERSION__', `${BUILD_VERSION}`)).pipe(
           gulp.dest(CHROME_BUILD_CONTENT_DIR + "web")
         ),
         preprocessCSS("web/viewer.css", "chrome", defines, true)
