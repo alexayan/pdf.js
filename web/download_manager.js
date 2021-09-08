@@ -113,6 +113,7 @@ class DownloadManager {
    *   the "open with" dialog.
    */
   download(blob, url, filename, sourceEventType = "download") {
+    console.log("download", blob, url, filename, sourceEventType);
     if (compatibilityParams.disableCreateObjectURL) {
       // URL.createObjectURL is not supported
       this.downloadUrl(url, filename);

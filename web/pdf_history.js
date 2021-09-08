@@ -251,7 +251,8 @@ class PDFHistory {
         page: pageNumber,
         rotation: this.linkService.rotation,
       },
-      forceReplace
+      // forceReplace
+      true
     );
 
     if (!this._popStateInProgress) {

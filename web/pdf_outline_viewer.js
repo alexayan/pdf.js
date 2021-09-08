@@ -126,6 +126,9 @@ class PDFOutlineViewer extends BaseTreeViewer {
 
     element.href = linkService.getDestinationHash(dest);
     element.onclick = evt => {
+      console.log(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
       this._updateCurrentTreeItem(evt.target.parentNode);
 
       if (dest) {

@@ -263,6 +263,12 @@ const PDFViewerApplication = {
 
   // Called once when the document is loaded.
   async initialize(appConfig) {
+    const queryString = document.location.search.substring(1);
+    const params = parseQueryString(queryString);
+    if (params.get("title")) {
+      this.setTitle(params.get("title"));
+    }
+
     this.preferences = this.externalServices.createPreferences();
     this.appConfig = appConfig;
 
@@ -614,8 +620,20 @@ const PDFViewerApplication = {
     );
   },
 
+  initWechat() {
+    function ready() {
+      console.log(window.__wxjs_environment === 'miniprogram') // true
+    }
+    if (!window.WeixinJSBridge || !WeixinJSBridge.invoke) {
+      document.addEventListener('WeixinJSBridgeReady', ready, false)
+    } else {
+      ready();
+    }
+  },
+
   run(config) {
     this.initialize(config).then(webViewerInitialized);
+    this.initWechat();
   },
 
   get initialized() {
@@ -752,7 +770,8 @@ const PDFViewerApplication = {
         title = url;
       }
     }
-    this.setTitle(title);
+    // disable set url title
+    // this.setTitle(title);
   },
 
   setTitle(title) {
@@ -961,6 +980,7 @@ const PDFViewerApplication = {
   },
 
   async download({ sourceEventType = "download" } = {}) {
+    console.log("download");
     const url = this.baseUrl,
       filename = this._docFilename;
     try {
@@ -971,6 +991,7 @@ const PDFViewerApplication = {
 
       await this.downloadManager.download(blob, url, filename, sourceEventType);
     } catch (reason) {
+      console.error(reason);
       // When the PDF document isn't ready, or the PDF file is still
       // downloading, simply download using the URL.
       await this.downloadManager.downloadUrl(url, filename);
@@ -978,6 +999,7 @@ const PDFViewerApplication = {
   },
 
   async save({ sourceEventType = "download" } = {}) {
+    console.log("save");
     if (this._saveInProgress) {
       return;
     }
@@ -2084,8 +2106,8 @@ let validateFileURL;
 if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
   const HOSTED_VIEWER_ORIGINS = [
     "null",
-    "http://mozilla.github.io",
-    "https://mozilla.github.io",
+    "https://resource.nocode.com",
+    "http://127.0.0.1:8888",
   ];
   validateFileURL = function (file) {
     if (file === undefined) {
@@ -2253,6 +2275,10 @@ function webViewerInitialized() {
       PDFViewerApplication._documentError(msg, reason);
     });
   }
+
+  document.getElementById("sidebarCover").addEventListener("click", () => {
+    PDFViewerApplication.pdfSidebar.close();
+  });
 }
 
 function webViewerOpenFileViaURL(file) {

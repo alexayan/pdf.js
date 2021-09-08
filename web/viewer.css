@@ -248,6 +248,15 @@ select {
   transition-duration: var(--sidebar-transition-duration);
   transition-timing-function: var(--sidebar-transition-timing-function);
 }
+#sidebarCover{
+  position: absolute;
+  top: 32px;
+  left: 0px;
+  width: 100vw;
+  z-index: 99;
+  height: calc(100vh - 32px);
+  display: none;
+}
 html[dir="ltr"] #sidebarContainer {
   transition-property: left;
   left: calc(0px - var(--sidebar-width));
@@ -269,6 +278,9 @@ html[dir="rtl"] #sidebarContainer {
 #outerContainer.sidebarMoving #sidebarContainer,
 #outerContainer.sidebarOpen #sidebarContainer {
   visibility: visible;
+}
+#outerContainer.sidebarOpen #sidebarCover{
+  display: block;
 }
 html[dir="ltr"] #outerContainer.sidebarOpen #sidebarContainer {
   left: 0;
@@ -1410,6 +1422,10 @@ a:focus > .thumbnail > .thumbnailSelectionRing,
   user-select: none;
 }
 
+#outlineView{
+  padding-bottom: 20px;
+}
+
 html[dir="ltr"] .treeWithDeepNesting > .treeItem,
 html[dir="ltr"] .treeItem > .treeItems {
   margin-left: 20px;
@@ -1940,6 +1956,10 @@ html[dir="rtl"] #documentPropertiesOverlay .row > * {
   html[dir="rtl"] .findbar {
     right: 34px;
   }
+}
+
+.force-hide{
+  display: none!important;
 }
 
 @media all and (max-width: 535px) {
